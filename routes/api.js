@@ -46,9 +46,18 @@ module.exports = function (app) {
 
   app
     .route('/api/books/:id')
-    .get(function (req, res) {
+    .get(function (req, res, next) {
       let bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+      Book.findById(bookid, { commentcount: 0 })
+        .then((book) => {
+          if(!book){
+            res.send("no book exists")
+            return;
+          }
+          res.json(book);
+        })
+        .catch(next);
     })
     .post(function (req, res) {
       let bookid = req.params.id;
