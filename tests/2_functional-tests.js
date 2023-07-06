@@ -10,6 +10,7 @@ const chaiHttp = require('chai-http');
 const chai = require('chai');
 const assert = chai.assert;
 const server = require('../server');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 chai.use(chaiHttp);
 
@@ -247,7 +248,6 @@ function getValidBookId() {
   });
 }
 
-// later when we added mongoose we will generate real id
 function getInvalidBookId() {
-  return Math.ceil(Math.random() * 10000);
+  return new ObjectId();
 }
