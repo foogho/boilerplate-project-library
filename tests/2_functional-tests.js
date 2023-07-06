@@ -76,8 +76,9 @@ suite('Functional Tests', function () {
             .post('/api/books')
             .send()
             .end((err, res) => {
+              console.log(res.body);
               assert.equal(res.status, 200);
-              assert.equal(res.body, 'missing required field title');
+              assert.equal(res.text, 'missing required field title');
               done();
             });
         });
@@ -109,7 +110,7 @@ suite('Functional Tests', function () {
       test('Test GET /api/books/[id] with id not in db', function (done) {
         requester.get('/api/books/' + getInvalidBookId()).end((err, res) => {
           assert.equal(res.status, 200);
-          assert.equal(res.body, 'no book exists');
+          assert.equal(res.text, 'no book exists');
           done();
         });
       });
@@ -183,7 +184,7 @@ suite('Functional Tests', function () {
               .send()
               .end((err, res) => {
                 assert.equal(res.status, 200);
-                assert.equal(res.body, 'missing required field comment');
+                assert.equal(res.text, 'missing required field comment');
                 done();
               });
           });
@@ -197,7 +198,7 @@ suite('Functional Tests', function () {
             })
             .end((err, res) => {
               assert.equal(res.status, 200);
-              assert.equal(res.body, 'no book exists');
+              assert.equal(res.text, 'no book exists');
               done();
             });
         });
@@ -209,7 +210,7 @@ suite('Functional Tests', function () {
         getValidBookId().then((id) => {
           requester.delete('/api/books/' + id, (err, res) => {
             assert.equal(res.status, '201');
-            assert.equal(res.body, 'delete successful');
+            assert.equal(res.text, 'delete successful');
             done();
           });
         });
@@ -218,7 +219,7 @@ suite('Functional Tests', function () {
       test('Test DELETE /api/books/[id] with  id not in db', function (done) {
         requester.delete('/api/books/' + getInvalidBookId()).end((err, res) => {
           assert.equal(res.status, 200);
-          assert.equal(res.body, 'no book exists');
+          assert.equal(res.text, 'no book exists');
           done();
         });
       });
