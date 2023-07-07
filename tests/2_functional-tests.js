@@ -209,7 +209,7 @@ suite('Functional Tests', function () {
     suite('DELETE /api/books/[id] => delete book object id', function () {
       test('Test DELETE /api/books/[id] with valid id in db', function (done) {
         getValidBookId().then((id) => {
-          requester.delete('/api/books/' + id, (err, res) => {
+          requester.delete('/api/books/' + id).end((err, res) => {
             assert.equal(res.status, '201');
             assert.equal(res.text, 'delete successful');
             done();
