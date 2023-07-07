@@ -179,7 +179,7 @@ suite('Functional Tests', function () {
         });
 
         test('Test POST /api/books/[id] without comment field', function (done) {
-          getValidBookId((id) => {
+          getValidBookId().then((id) => {
             requester
               .post('/api/books/' + id)
               .send()
