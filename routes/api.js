@@ -40,8 +40,13 @@ module.exports = function (app) {
           next(err);
         });
     })
-    .delete(function (req, res) {
+    .delete(function (req, res, next) {
       //if successful response will be 'complete delete successful'
+      Book.deleteMany({})
+        .then(() => {
+          res.send("complete delete successful")
+        })
+        .catch(next);
     });
 
   app
