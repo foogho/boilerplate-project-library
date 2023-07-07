@@ -51,18 +51,39 @@ module.exports = function (app) {
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
       Book.findById(bookid, { commentcount: 0 })
         .then((book) => {
-          if(!book){
-            res.send("no book exists")
+          if (!book) {
+            res.send('no book exists');
             return;
           }
           res.json(book);
         })
         .catch(next);
     })
-    .post(function (req, res) {
+    .post(function (req, res, next) {
       let bookid = req.params.id;
       let comment = req.body.comment;
+      if (!comment) {
+        res.send('missing required field comment');
+        return;
+      }
       //json res format same as .get
+      Book.findById(bookid)
+        .then((book) => {
+          if (!book) {
+            res.send('no book exists');
+            return;
+          }
+          book.comments.push({ comment });
+          return book.save();
+        })
+        .then(({ _id, title, comments }) => {
+          res.status(201).json({
+            _id,
+            title,
+            comments,
+          });
+        })
+        .catch(next);
     })
     .delete(function (req, res) {
       let bookid = req.params.id;
