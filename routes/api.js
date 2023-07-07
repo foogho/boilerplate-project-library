@@ -8,7 +8,7 @@
 
 'use strict';
 
-const { ValidationError } = require('mongoose').Error;
+const { ValidationError, DocumentNotFoundError } = require('mongoose').Error;
 
 const Book = require('../models/book');
 
@@ -85,8 +85,20 @@ module.exports = function (app) {
         })
         .catch(next);
     })
-    .delete(function (req, res) {
+    .delete(function (req, res, next) {
       let bookid = req.params.id;
       //if successful response will be 'delete successful'
+      Book.deleteOne({ _id: bookid })
+        .orFail()
+        .then(() => {
+          res.status(201).send('delete successful');
+        })
+        .catch((err) => {
+          if (err instanceof DocumentNotFoundError) {
+            res.send('no book exists');
+            return;
+          }
+          next(err);
+        });
     });
 };
