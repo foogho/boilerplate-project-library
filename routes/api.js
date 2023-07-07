@@ -29,8 +29,8 @@ module.exports = function (app) {
       //response will contain new book object including atleast _id and title
       new Book({ title })
         .save()
-        .then((createdBook) => {
-          res.status(201).json(createdBook);
+        .then(({ _id, title, commentcount }) => {
+          res.status(201).json({ _id, title, commentcount });
         })
         .catch((err) => {
           if (err instanceof ValidationError) {
@@ -44,7 +44,7 @@ module.exports = function (app) {
       //if successful response will be 'complete delete successful'
       Book.deleteMany({})
         .then(() => {
-          res.send("complete delete successful")
+          res.send('complete delete successful');
         })
         .catch(next);
     });
