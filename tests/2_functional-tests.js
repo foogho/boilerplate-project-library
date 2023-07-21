@@ -251,3 +251,10 @@ function getValidBookId() {
 function getInvalidBookId() {
   return new ObjectId();
 }
+
+// below code solve a problem related to replit when hosting app
+// on it. for more info please refer to below link:
+// https://forum.freecodecamp.org/t/quality-assurance-projects-personal-library-replit-wont-accept-any-requests-if-it-runs-tests/596002
+after(function () {
+  chai.request(server).get('/');
+});
