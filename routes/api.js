@@ -78,7 +78,7 @@ module.exports = function (app) {
             res.send('no book exists');
             return;
           }
-          book.comments.push({ comment });
+          book.comments.push(comment);
           return book.save();
         })
         .then(({ _id, title, comments }) => {

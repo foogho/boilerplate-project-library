@@ -5,9 +5,7 @@ const schema = new Schema(
     title: { type: String, required: true },
     comments: [
       {
-        comment: {
-          type: String,
-        },
+        type: String,
       },
     ],
     commentcount: {

@@ -85,7 +85,7 @@ $(document).ready(function () {
 function fetchAndRenderComments(bookId) {
   $.getJSON('/api/books/' + bookId, (book) => {
     $('#commentsModal .modal-body ul').html(
-      book.comments.map((comment) => `<li>${comment.comment}</li>`)
+      book.comments.map((comment) => `<li>${comment}</li>`)
     );
   });
 }
