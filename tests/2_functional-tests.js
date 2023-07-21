@@ -118,30 +118,43 @@ suite('Functional Tests', function () {
 
       test('Test GET /api/books/[id] with valid id in db', function (done) {
         getValidBookId().then((validId) => {
-          requester.get('/api/books/' + validId).end((err, res) => {
-            assert.equal(res.status, 200);
-            assert.propertyVal(
-              res.body,
-              '_id',
-              validId,
-              'book should contain requested _id field'
-            );
-            assert.property(
-              res.body,
-              'title',
-              'book should contain title field'
-            );
-            assert.property(
-              res.body,
-              'comments',
-              'book should contain comments field'
-            );
-            assert.isArray(
-              res.body.comments,
-              'comments field should be an Array'
-            );
-            done();
-          });
+          // add a sample comment before get comments list
+          requester
+            .post('/api/books/' + validId)
+            .send({
+              comment: 'test comment',
+            })
+            .end((err, res) => {
+              if (err) throw new Error('failed to create sample comment');
+              requester.get('/api/books/' + validId).end((err, res) => {
+                assert.equal(res.status, 200);
+                assert.propertyVal(
+                  res.body,
+                  '_id',
+                  validId,
+                  'book should contain requested _id field'
+                );
+                assert.property(
+                  res.body,
+                  'title',
+                  'book should contain title field'
+                );
+                assert.property(
+                  res.body,
+                  'comments',
+                  'book should contain comments field'
+                );
+                assert.isArray(
+                  res.body.comments,
+                  'comments field should be an Array'
+                );
+                assert.isString(
+                  res.body.comments[0],
+                  'comments field should be an array of strings'
+                );
+                done();
+              });
+            });
         });
       });
     });
@@ -169,9 +182,9 @@ suite('Functional Tests', function () {
                   'title',
                   'response should contain book title'
                 );
-                assert.isArray(
-                  res.body.comments,
-                  'book comments in the response should be an array'
+                assert.isString(
+                  res.body.comments[0],
+                  'book comments in the response should be an array of strings'
                 );
                 done();
               });
